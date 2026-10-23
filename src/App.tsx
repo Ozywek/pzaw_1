@@ -1,4 +1,3 @@
-  import dziejepolski from './assets/dziejepolski.jpg';
   import gwiezdnewojny from './assets/gwiezdnewojny.jpg';
   import hailmary from './assets/hailmary.jpg';
   import oddyseja from './assets/oddyseja.jpg';
@@ -7,20 +6,31 @@
   import zbrodniaikara from './assets/zbrodniaikara.jpg';
   import lalka from './assets/lalka.jpg';
   import harrypoter from './assets/harrypoter.jpg';
+  
+  import { useState } from "react";
 
 
 
 
 
   function Filmy({plakat, tytul, rok, rating}: do_filmow){
+    const [isOpen, setIsOpen] = useState(true);
+
     return (
+
         <div>
+            <h1 onClick={() => setIsOpen(!isOpen)}>Filmy {isOpen ? "⏷" : "⏵"}</h1> 
+            {isOpen && 
+            <div>
             <img src={plakat} alt={tytul} height="200" width="150" />
             <br />
             <h2>{tytul}</h2>
             <i>{rok}</i> <br />
-            <i>Rating: {rating}</i>
-        <br />
+            <i>Rating: {rating}</i> <br />
+            {rating > 8 && <p>Polecany!</p>}
+            <br />
+            </div>
+            }
         </div>
     );
   }
@@ -33,6 +43,8 @@
           <p>{tytul}</p>
           <p>{strony}</p>
           <p>{rok}</p>
+          {rok < 2000 && <p>Klasyka!</p>}
+
         <br />
         </div>
       );
@@ -50,30 +62,62 @@
             <p>Rok wydania: {rok}</p>
 
             <ul>
-                {utwory.map((utwor, index) => (
-                    <li key={index}>
-                        {utwor.tytul} – {utwor.czas} s
-                    </li>
-                ))}
+                {utwory?.length > 0 ? (
+                    utwory.map((utwor, index) => (
+                        <li key={index}>
+                            {utwor.tytul} – {utwor.czas} s
+                        </li>
+                    ))
+                ) : (
+                    <p>Brak utworów</p>
+                )}
             </ul>
+
+
         <br />
         </div>
     );
   }
 
 function App() {
-    const MovieCards = movies.sort((a, b) => a.tytul.localeCompare(b.tytul, "pl")).map((movie) => (<Filmy
+    // const MovieCards = movies.sort((a, b) => a.tytul.localeCompare(b.tytul, "pl")).map((movie) => (<Filmy
+    //   plakat={movie.plakat}
+    //   tytul={movie.tytul}
+    //   rok={movie.rok}
+    //   rating={movie.rating}
+    // />));
+
+    const MovieCardsAFTER12010 = movies.filter((movie) => Number(movie.rok) >2010).map((movie) => (<Filmy
       plakat={movie.plakat}
       tytul={movie.tytul}
       rok={movie.rok}
       rating={movie.rating}
     />));
-    const bookCards = books.map((book) => (<Ksiazki
+
+    // const bookCards = books.map((book) => (<Ksiazki
+    //   okladka={book.okladka}
+    //   tytul={book.tytul}
+    //   strony={book.strony}
+    //   rok={book.rok}
+    // />));
+
+    const bookCards = books.sort((a, b) => a.rok - b.rok).map((book) => (<Ksiazki
       okladka={book.okladka}
       tytul={book.tytul}
       strony={book.strony}
       rok={book.rok}
     />));
+
+        //longest todo
+    // const albumCards = albums.map((album) => (<Muzyka
+    //   okladka={album.okladka}
+    //   nazwa_albumu={album.nazwa_albumu}
+    //   nazwa_zespolu={album.nazwa_zespolu}
+    //   gatunek={album.gatunek}
+    //   rok={album.rok}
+    //   utwory={album.utwory}
+    // />));
+        
     const albumCards = albums.map((album) => (<Muzyka
       okladka={album.okladka}
       nazwa_albumu={album.nazwa_albumu}
@@ -82,8 +126,10 @@ function App() {
       rok={album.rok}
       utwory={album.utwory}
     />));
+    
 
-    const cards = [...MovieCards, ...bookCards, ...albumCards];
+
+    const cards = [...MovieCardsAFTER12010, ...bookCards, ...albumCards];
 
     return (<main>{cards}</main>);
 }
@@ -92,7 +138,7 @@ function App() {
   const movies: do_filmow[] = [
   { plakat: oddyseja, tytul: "2001: Odyseja kosmiczna", rok: 1968, rating: 8.7 },
   { plakat: gwiezdnewojny, tytul: "Gwiezdne wojny: część VI – Powrót Jedi", rok: 1980, rating: 8.8 },
-  { plakat: hailmary, tytul: "Projekt Hail Mary", rok: 2026, rating: 7.9 }
+  { plakat: hailmary, tytul: "Projekt Hail Mary", rok: 2026, rating: 8.9 }
 ];
 
 const books: do_ksiazek[] = [
@@ -131,6 +177,14 @@ const albums: do_muzyki[] = [
       { tytul: "Good Life", czas: 207 },
       { tytul: "Flashing Lights", czas: 237 }
     ]
+  },
+    {
+    okladka: graduation,
+    nazwa_albumu: "TEST",
+    nazwa_zespolu: "TEST",
+    gatunek: "TEST",
+    rok: 1,
+    utwory: []
   }
 ];
 
@@ -158,6 +212,5 @@ const albums: do_muzyki[] = [
     }[];
   }
   export default App
-
 
 
