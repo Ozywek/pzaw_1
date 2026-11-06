@@ -6,7 +6,8 @@
   import zbrodniaikara from './assets/zbrodniaikara.jpg';
   import lalka from './assets/lalka.jpg';
   import harrypoter from './assets/harrypoter.jpg';
-  
+  import 'bootstrap/dist/css/bootstrap.min.css';
+
   import { useState } from "react";
 
 
@@ -14,37 +15,32 @@
 
 
   function Filmy({plakat, tytul, rok, rating}: do_filmow){
-    const [isOpen, setIsOpen] = useState(true);
 
     return (
 
-        <div>
-            <h1 onClick={() => setIsOpen(!isOpen)}>Filmy {isOpen ? "⏷" : "⏵"}</h1> 
-            {isOpen && 
-            <div>
-            <img src={plakat} alt={tytul} height="200" width="150" />
+        <div className='card'>
+            <div className="card-body">
+            <img className ='card-img-top' src={plakat} alt={tytul}/>
             <br />
-            <h2>{tytul}</h2>
+            <h2 className='card-title'>{tytul}</h2>
             <i>{rok}</i> <br />
             <i>Rating: {rating}</i> <br />
             {rating > 8 && <p>Polecany!</p>}
             <br />
             </div>
-            }
         </div>
     );
   }
 
   function Ksiazki({okladka, tytul, strony, rok}: do_ksiazek){
       return (
-        <div>
-          <img src={okladka} alt={tytul} height="200" width="150" />
+        <div className='card'>
+          <img className='card-img-top' src={okladka} alt={tytul}/>
           <br />
-          <p>{tytul}</p>
+          <p className='card-title'>{tytul}</p>
           <p>{strony}</p>
           <p>{rok}</p>
           {rok < 2000 && <p>Klasyka!</p>}
-
         <br />
         </div>
       );
@@ -54,52 +50,39 @@
 
   function Muzyka({okladka, nazwa_albumu, nazwa_zespolu, gatunek, rok, utwory}: do_muzyki){
     return (
-        <div>
-            <img src={okladka} alt={nazwa_albumu} height="200" width="200" />
-            <h2>{nazwa_albumu}</h2>
+        <div className='card'>
+            <img className='card-img-top' src={okladka} alt={nazwa_albumu}  />
+            <h2 className='card-title'>{nazwa_albumu}</h2>
             <p>Wykonawca: {nazwa_zespolu}</p>
             <p>Gatunek: {gatunek}</p>
             <p>Rok wydania: {rok}</p>
-
-            <ul>
-                {utwory?.length > 0 ? (
+            <table  className='table table-striped table-hover' >
+              <tbody>
+                {utwory?.length > 0 ? ( //zmienic na tabele
                     utwory.map((utwor, index) => (
-                        <li key={index}>
-                            {utwor.tytul} – {utwor.czas} s
-                        </li>
+                        <tr key={index}>
+                            <td>{utwor.tytul}</td><td>–</td>  <td>{utwor.czas} s</td>
+                        </tr>
                     ))
                 ) : (
-                    <p>Brak utworów</p>
+                    <div className="alert alert-warning" role="alert">Brak utworów</div>
                 )}
-            </ul>
+            </tbody>
+          </table>
 
-
-        <br />
-        </div>
+         <br />
+         </div>
     );
   }
 
 function App() {
-    // const MovieCards = movies.sort((a, b) => a.tytul.localeCompare(b.tytul, "pl")).map((movie) => (<Filmy
-    //   plakat={movie.plakat}
-    //   tytul={movie.tytul}
-    //   rok={movie.rok}
-    //   rating={movie.rating}
-    // />));
-
-    const MovieCardsAFTER12010 = movies.filter((movie) => Number(movie.rok) >2010).map((movie) => (<Filmy
+    const MovieCardsAFTER12010 = movies.filter((movie) => Number(movie.rok) > 0).map((movie) => (<Filmy
       plakat={movie.plakat}
       tytul={movie.tytul}
       rok={movie.rok}
       rating={movie.rating}
     />));
 
-    // const bookCards = books.map((book) => (<Ksiazki
-    //   okladka={book.okladka}
-    //   tytul={book.tytul}
-    //   strony={book.strony}
-    //   rok={book.rok}
-    // />));
 
     const bookCards = books.sort((a, b) => a.rok - b.rok).map((book) => (<Ksiazki
       okladka={book.okladka}
@@ -129,9 +112,25 @@ function App() {
     
 
 
-    const cards = [...MovieCardsAFTER12010, ...bookCards, ...albumCards];
+    const [isOpen, setIsOpen] = useState(true);
 
-    return (<main>{cards}</main>);
+    return (
+      <main className="container">
+        <h1 onClick={() => setIsOpen(!isOpen)}>Filmy {isOpen ? "⏷" : "⏵"}</h1> 
+      {isOpen && (
+        <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
+            {MovieCardsAFTER12010}
+        </div>
+      )}  
+      <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
+        {bookCards}
+      </div>
+      <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
+        {albumCards}  
+      </div>
+    </main>
+  
+  );
 }
 
 
