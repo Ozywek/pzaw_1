@@ -9,6 +9,12 @@ import harrypoter from './assets/harrypoter.jpg';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useState } from "react";
 
+
+
+  const [PLH, setPLH] = useState('Placeholder');
+
+
+
   const chooseMovie = (tytul) => {
     console.log(`Wybrano film: ${tytul}`);
   };
@@ -25,6 +31,13 @@ import { useState } from "react";
 
   const handleSongClick  = (utwor, album) => {
     console.log(`Wybrano utwór: ${utwor.tytul} z ${album}`);
+  };
+
+
+
+  const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedValue = event.target.value;
+    setPLH (selectedValue);
   };
 
 
@@ -132,12 +145,23 @@ function App() {
 
   return (
     <main className="container">
+
       <h1 onClick={() => setIsOpen(!isOpen)}>Filmy {isOpen ? "⏷" : "⏵"}</h1>
       {isOpen && (
         <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
           {MovieCardsAFTER12010}
         </div>
       )}
+      <input
+        type="text"
+        className="form-control"
+        placeholder="Wpisz tytuł"
+        id="book-search"
+        onChange={(e) => handleSelectChange()}
+      />
+      <p>{PLH}</p>
+
+
       <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
         {bookCards}
       </div>
