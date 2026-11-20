@@ -18,16 +18,20 @@ import { useState } from "react";
   };
 
 
-function handleSongClick() {
+// function handleSongClick() {
   
 
-}
+// }
+
+  const handleSongClick  = (utwor, album) => {
+    console.log(`Wybrano utwór: ${utwor.tytul} z ${album}`);
+  };
+
 
 
 function Filmy({ plakat, tytul, rok, rating }: do_filmow) {
 
   return (
-
     <div className='card' onClick={() => chooseMovie(tytul)}>
       <div className="card-body">
         <img className='card-img-top' src={plakat} alt={tytul} />
@@ -71,8 +75,10 @@ function Muzyka({ okladka, nazwa_albumu, nazwa_zespolu, gatunek, rok, utwory }: 
         <tbody>
           {utwory?.length > 0 ? ( 
             utwory.map((utwor, index) => (
-              <tr key={index}>
-                <td>{utwor.tytul}</td>
+              <tr key={index} onClick={() => handleSongClick(utwor, nazwa_albumu)}>
+                <td>
+                  {utwor.tytul}
+                </td>
                 <td>–</td>
                 <td>{utwor.czas} s</td>
               </tr>
