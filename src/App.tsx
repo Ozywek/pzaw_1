@@ -9,7 +9,6 @@ import harrypoter from './assets/harrypoter.jpg';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useState } from "react";
 
-
   const chooseMovie = (tytul) => {
     console.log(`Wybrano film: ${tytul}`);
   };
@@ -17,6 +16,14 @@ import { useState } from "react";
   const btnDetails = (tytul) => {
     console.log(`Pokaż szczegóły dla: ${tytul}`);
   };
+
+
+function handleSongClick() {
+  
+
+}
+
+
 function Filmy({ plakat, tytul, rok, rating }: do_filmow) {
 
   return (
@@ -30,7 +37,7 @@ function Filmy({ plakat, tytul, rok, rating }: do_filmow) {
         <button onClick={(e) =>{  
           e.stopPropagation();
           btnDetails(tytul)
-        }}> Pokaż Szczegóły </button>
+        }}> Pokaż Szczegóły </button> <br />
         <i>Rating: {rating}</i> <br />
         {rating > 8 && <p>Polecany!</p>}
         <br />
